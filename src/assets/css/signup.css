@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding:0;
+}
+
+.signUp{
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../image/signupBg.svg");
+}
+
+.signUpBg{
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(180, 178, 165, 0.05);
+}
+
+.mainSignUp{
+    width: 450px;
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 4px 5px 4px 1px rgba(0, 0, 0, 0.25);
+}
+
+.mainSignUp .topLeft{
+    width: 129px;
+    top: 0;
+    left: 0;
+}
+
+.mainSignUp .bottomRight{
+    width: 103px;
+    height: 122px;
+    bottom: 0;
+    right: 0;
+}
+
+.queryHeader p{
+    font-family: Poppins;
+    font-weight: 300;
+}
+
+.queryPara{
+    font-family: Inria Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.signupInp1{
+    width: 170px;
+    height: 40px;
+    border-radius: 5px;
+    border: 0.5px solid rgba(0, 0, 0, 0.40);
+    background: #FFF;
+    font-size: 12px;
+}
+
+.signupInp2{
+    width: 230px;
+    height: 40px;
+    border-radius: 5px;
+    border: 0.5px solid rgba(0, 0, 0, 0.40);
+    background: #FFF;
+    font-size: 12px;
+}
+
+input:focus{
+    outline: none;
+}
+
+.queryButton{
+    border-radius: 7px;
+    background: #BD3CD2;
+    width: 128px;
+    height: 34px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: Inria Sans;
+}
+
+.veriButton{
+    width: 66px;
+    height: 28px;
+    background: #BD3CD2;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: Inria Sans;
+}
+
+@media (max-width:575px)
+{
+    .mainSignUp{
+        width: 350px;
+        border-radius: 20px;
+        background: #FFF;
+        box-shadow: 4px 5px 4px 1px rgba(0, 0, 0, 0.25);
+    }
+}
