@@ -1,8 +1,10 @@
-import React from "react";
+import React,{ useState } from "react";
 import "../assets/css/signup.css";
+import {useNavigate} from 'react-router-dom'
 
 const Signup = () => {
-
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="signUp position-relative">
       <div className="position-absolute signUpBg d-flex justify-content-center align-items-center">
@@ -60,16 +62,29 @@ const Signup = () => {
               Verify Code
             </button>
           </div>
-          <div className="d-flex justify-content-start align-items-start ms-sm-5">
+          <div className="d-flex justify-content-start align-items-start ms-sm-5 position-relative password1">
             <input
-              type={"text"}
+              type={showPassword ? "text" : "password"}
               name="name"
               className="mt-3 ms-sm-4 ms-4 signupInp1 ps-2"
               placeholder="Password*"
             />
+            <div onClick={()=>{
+                setShowPassword(!showPassword)
+            }}>
+                {showPassword ? 
+                (
+                <i className="fa fa-eye-slash position-absolute"></i>
+                ) : (
+                <i className="fa fa-eye position-absolute"></i>
+                )}
+            </div>
           </div>
-          <div className="d-flex justify-content-center align-items-center mt-4 mb-5">
+          <div className="d-flex justify-content-center align-items-center mt-4 mb-5 flex-column">
             <button className="queryButton text-light border-0">Sign Up</button>
+            <p className="registeredUser mt-3 mb-0 pb-0">Already a user? <span onClick={()=>{
+              navigate("/login")
+            }}>Login</span></p>
           </div>
           <img
             src={require("../assets/image/signupBottomRight.png")}

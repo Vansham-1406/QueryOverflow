@@ -82,7 +82,9 @@ const MenuBar = () => {
                 <i className="fa fa-search fs-5 pt-1 pe-4"></i>
               </div>
               <div>
-                <button className="menubar_btn1 me-2">Login</button>
+                <button className="menubar_btn1 me-2" onClick={()=>{
+                  navigate("/login")
+                }}>Login</button>
                 <button className="menubar_btn2 ms-2 me-lg-0 me-3" onClick={()=>{
                   navigate("/signup")
                 }}>

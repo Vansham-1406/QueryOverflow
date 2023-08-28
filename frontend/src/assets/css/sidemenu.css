@@ -120,12 +120,9 @@
 }
 
 .questionHeader p{
-    color: #000;
     text-align: justify;
     font-size: 14px;
-    font-style: normal;
     font-weight: 300;
-    line-height: normal;
     line-height: 25px;
 }
 
@@ -137,9 +134,7 @@
     text-align: center;
     font-family: Open Sans;
     font-size: 12px;
-    font-style: normal;
     font-weight: 300;
-    line-height: normal;
 }
 
 .questionHeader .userName{
