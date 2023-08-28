@@ -167,4 +167,10 @@ input:focus{
     .mainSignUp{
         width: 350px;
     }
+    .signUp .signUpBg .mainSignUp .password i{
+        margin-right: 35px;
+        margin-top: 28px;
+        right: 0;
+    }
+    
 }
