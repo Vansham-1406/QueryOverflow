@@ -1,0 +1,96 @@
+.allQuestions{
+    width: 55vw;
+}
+
+.query{
+    background-color: #0A95FF;
+    border: none;
+    color: white;
+    font-size: 13px;
+    width: 105px;
+    height: 43px;     
+    border-radius: 10px;  
+}
+
+.total_question p{
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.singleQuestion{
+    border-top: 1px solid #D0C4C4;
+}
+
+.singleQuestionPara{
+    font-size: 13px;
+}
+
+.questionHeader h3{
+    font-size: 18px;
+    color: #0A95FF;
+    font-weight: 600;
+    text-align: justify;
+    line-height: 28px;
+}
+
+.questionHeader p{
+    text-align: justify;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 25px;
+}
+
+.tagHeader{
+    border-radius: 5px;
+    border: 0px solid #000;
+    background: #E1ECF4;
+    color: #0A95FF;
+    text-align: center;
+    font-family: Open Sans;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.questionHeader .userName{
+    font-size: 11px;
+    margin-top: -8px;
+}
+
+.questionHeader .userTime{
+    font-size: 11px;
+}
+
+.bottom_line{
+    width: 100%;
+    height: 1px;
+    background-color:#D0C4C4 ;
+}
+
+@media (max-width : 991px)
+{
+    .allQuestions{
+        width: 100vw;
+    }
+}
+
+@media (max-width:575px) and (min-width : 420px)
+{
+    .questionHeader h3{
+        font-size: 15px;
+        line-height: 30px;
+    }
+    .questionHeader p{
+        font-size: 12px;
+    }
+}
+
+@media (max-width:419px)
+{
+    .questionHeader h3{
+        font-size: 15px;
+        line-height: 25px;
+    }
+    .questionHeader p{
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,56 @@
+.topTags{
+    width: 21vw;
+}
+
+.topTagsBox{
+    border: 2px solid #F9E4C5;
+    background: linear-gradient(180deg, rgba(255, 224, 176, 0.47) 0%, rgba(255, 254, 252, 0.02) 19.27%, rgba(255, 254, 254, 0.01) 21.88%, rgba(255, 254, 254, 0.01) 21.89%, rgba(255, 255, 255, 0.00) 21.90%, rgba(255, 255, 255, 0.00) 27.60%);
+    width: 21vw;
+}
+
+.boxSingleTag{
+    border-radius: 5px;
+    border: 0.3px solid #000;
+    background: rgba(255, 224, 176, 0.15);
+    flex-shrink: 0;
+}
+
+.singleTopBox{
+    flex:50%
+}
+
+.boxSingleTag p{
+    font-size: 13px;
+}
+
+.num{
+    font-size: 13px;
+    padding-top: 4px;
+}
+
+@media (max-width : 991px)
+{
+    .topTags{
+        width: 95vw;
+    }
+    .topTagsBox{
+        width: 95vw;
+    }
+    .singleTopBox{
+        flex: 20%;
+    }
+}
+
+@media (max-width:575px) and (min-width : 420px)
+{
+    .singleTopBox{
+        flex: 30%;
+    }
+}
+
+@media (max-width:419px)
+{
+    .singleTopBox{
+        flex: 50%;
+    }
+}

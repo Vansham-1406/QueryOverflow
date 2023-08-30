@@ -1,22 +1,32 @@
 import React from "react";
 import "../../assets/css/sidemenu.css";
 import {useSelector} from 'react-redux'
+import {useNavigate,useLocation} from 'react-router-dom'
 const SideMenu = () => {
   const basic = useSelector((state)=>state.basic)
   const {menu} = basic
+  const navigate = useNavigate();
   return (
     <div className={menu ? "sidemenu1" : "sidemenu"}>
       <div className="d-flex justify-content-end pt-5 flex-column align-items-end">
-        <div className="box d-flex align-items-center position-relative">
-            <div className="box1"></div>
+        <div className="box d-flex align-items-center position-relative" onClick={()=>{
+          navigate("/")
+        }}>
+            <div className={useLocation().pathname === "/" ? "box1": ""}></div>
           <i className="fa fa-globe pe-1 ps-4"></i>
           <h6 className="pt-2 ps-2">Questions</h6>
         </div>
-        <div className="box d-flex align-items-center mt-5 position-relative">
+        <div className="box d-flex align-items-center mt-5 position-relative" onClick={()=>{
+          navigate("/tags")
+        }}>
+        <div className={useLocation().pathname === "/tags" ? "box1": ""}></div>
           <i className="fa fa-tags me-1 ms-4 fs-5"></i>
           <h6 className="mt-2 ms-2">Tags</h6>
         </div>
-        <div className="box d-flex align-items-center mt-5 ps-4 position-relative">
+        <div className="box d-flex align-items-center mt-5 ps-4 position-relative" onClick={()=>{
+          navigate("/users")
+        }}>
+          <div className={useLocation().pathname === "/users" ? "box1": ""}></div>
           <svg
             width="23"
             height="23"

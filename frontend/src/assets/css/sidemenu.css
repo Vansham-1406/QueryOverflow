@@ -54,104 +54,6 @@
   scroll-behavior: smooth;
 }
 
-.allQuestions{
-    width: 55vw;
-}
-
-.topTags{
-    width: 21vw;
-}
-
-.topTagsBox{
-    border: 2px solid #F9E4C5;
-    background: linear-gradient(180deg, rgba(255, 224, 176, 0.47) 0%, rgba(255, 254, 252, 0.02) 19.27%, rgba(255, 254, 254, 0.01) 21.88%, rgba(255, 254, 254, 0.01) 21.89%, rgba(255, 255, 255, 0.00) 21.90%, rgba(255, 255, 255, 0.00) 27.60%);
-    width: 21vw;
-}
-
-.boxSingleTag{
-    border-radius: 5px;
-    border: 0.3px solid #000;
-    background: rgba(255, 224, 176, 0.15);
-    flex-shrink: 0;
-}
-
-.singleTopBox{
-    flex:50%
-}
-
-.boxSingleTag p{
-    font-size: 13px;
-}
-
-.num{
-    font-size: 13px;
-    padding-top: 4px;
-}
-
-.query{
-    background-color: #0A95FF;
-    border: none;
-    color: white;
-    font-size: 13px;
-    width: 105px;
-    height: 43px;     
-    border-radius: 10px;  
-}
-
-.total_question p{
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.singleQuestion{
-    border-top: 1px solid #D0C4C4;
-}
-
-.singleQuestionPara{
-    font-size: 13px;
-}
-
-.questionHeader h3{
-    font-size: 18px;
-    color: #0A95FF;
-    font-weight: 600;
-    text-align: justify;
-    line-height: 28px;
-}
-
-.questionHeader p{
-    text-align: justify;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 25px;
-}
-
-.tagHeader{
-    border-radius: 5px;
-    border: 0px solid #000;
-    background: #E1ECF4;
-    color: #0A95FF;
-    text-align: center;
-    font-family: Open Sans;
-    font-size: 12px;
-    font-weight: 300;
-}
-
-.questionHeader .userName{
-    font-size: 11px;
-    margin-top: -8px;
-}
-
-.questionHeader .userTime{
-    font-size: 11px;
-}
-
-.bottom_line{
-    width: 100%;
-    height: 1px;
-    background-color:#D0C4C4 ;
-}
-
 @media (max-width : 991px)
 {
     .sidemenu{
@@ -160,18 +62,6 @@
     .mainmenu{
         width: 100vw;
         left: 0;
-    }
-    .allQuestions{
-        width: 100vw;
-    }
-    .topTags{
-        width: 95vw;
-    }
-    .topTagsBox{
-        width: 95vw;
-    }
-    .singleTopBox{
-        flex: 20%;
     }
 }
 
@@ -189,31 +79,12 @@
     .sidemenu1{
         width: 40vw;
     }
-    .questionHeader h3{
-        font-size: 15px;
-        line-height: 30px;
-    }
-    .questionHeader p{
-        font-size: 12px;
-    }
-    .singleTopBox{
-        flex: 30%;
-    }
 }
 
 @media (max-width:419px)
 {
     .sidemenu1{
         width: 50vw;
-    }
-    .questionHeader h3{
-        font-size: 15px;
-        line-height: 25px;
-    }
-    .questionHeader p{
-        font-size: 12px;
-    }
-    .singleTopBox{
-        flex: 50%;
+        top: 9.2%;
     }
 }

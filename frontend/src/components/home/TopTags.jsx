@@ -1,6 +1,6 @@
 import React from 'react'
 import "../../assets/css/sidemenu.css";
-
+import '../../assets/css/topTags.css'
 const TopTags = () => {
   return (
     <div className='topTags ms-lg-2 ms-0 mt-lg-0 mt-4 ms-2 me-2 mb-lg-0 mb-5'>

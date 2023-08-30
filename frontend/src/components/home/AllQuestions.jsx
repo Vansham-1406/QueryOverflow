@@ -1,14 +1,15 @@
 import React from 'react'
 import "../../assets/css/sidemenu.css";
+import '../../assets/css/allQuestions.css'
 
 const AllQuestions = () => {
   return (
     <div className='allQuestions'>
-        <div className='d-flex justify-content-between ps-4 pe-5'>
+        <div className='d-flex justify-content-between ps-lg-4 pe-ls-5 ps-2 pe-2'>
             <h3 className='pt-1'>All Questions</h3>
             <button className='query ps-3 pe-3'>Ask Query</button>
         </div>
-        <div className='ms-4 pt-4 total_question'>
+        <div className='ms-lg-4 ms-2 pt-4 total_question'>
             <p>100 questions</p>
         </div>
         <div className='d-flex flex-column'>
