@@ -1,18 +1,34 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import "../../assets/css/sidemenu.css";
 import {useSelector} from 'react-redux'
-import {useNavigate,useLocation} from 'react-router-dom'
+import {useNavigate,useLocation, useParams} from 'react-router-dom'
 const SideMenu = () => {
   const basic = useSelector((state)=>state.basic)
   const {menu} = basic
   const navigate = useNavigate();
+  const [pathN, setPathN] = useState(false)
+  const [pathM, setPathM] = useState(false)
+  const q = useParams().tagname
+  const id = useParams().id
+  useEffect(() => {
+    if(q)
+    {
+      setPathN(true)
+    }
+
+    if(id)
+    {
+      setPathM(true)
+    }
+  }, [q,pathN,id,pathM])
+  
   return (
     <div className={menu ? "sidemenu1" : "sidemenu"}>
       <div className="d-flex justify-content-end pt-5 flex-column align-items-end">
         <div className="box d-flex align-items-center position-relative" onClick={()=>{
           navigate("/")
         }}>
-            <div className={useLocation().pathname === "/" ? "box1": ""}></div>
+            <div className={useLocation().pathname === "/" || pathN ? "box1": ""}></div>
           <i className="fa fa-globe pe-1 ps-4"></i>
           <h6 className="pt-2 ps-2">Questions</h6>
         </div>
@@ -26,7 +42,7 @@ const SideMenu = () => {
         <div className="box d-flex align-items-center mt-5 ps-4 position-relative" onClick={()=>{
           navigate("/users")
         }}>
-          <div className={useLocation().pathname === "/users" ? "box1": ""}></div>
+          <div className={useLocation().pathname === "/users" || pathM ? "box1": ""}></div>
           <svg
             width="23"
             height="23"

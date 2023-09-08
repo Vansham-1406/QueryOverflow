@@ -80,6 +80,10 @@
     height: 35px;
 }
 
+.qo:hover{
+    cursor: pointer;
+}
+
 @media (max-width:419px)
 {
     .menubar_btn1{

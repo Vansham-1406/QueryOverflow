@@ -2,7 +2,7 @@ import React from "react";
 import "../../assets/css/home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setMenu, setSearch } from "../../redux/features/basic/basicSlice";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 const MenuBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,11 +26,13 @@ const MenuBar = () => {
               </div>
             </div>
             <div className="col-1 d-flex justify-content-center mt-1 align-items-center">
-                <div onClick={()=>{
-                    dispatch(setSearch(false))
-                }}>
-                    <i className="fa fa-xmark cross fs-4"></i>
-                </div>
+              <div
+                onClick={() => {
+                  dispatch(setSearch(false));
+                }}
+              >
+                <i className="fa fa-xmark cross fs-4"></i>
+              </div>
             </div>
           </div>
         ) : (
@@ -48,14 +50,21 @@ const MenuBar = () => {
                   <i className="fa fa-bars fs-4 mt-2 me-sm-4 me-2"></i>
                 )}
               </div>
-              <img
-                src={require("../../assets/image/logo.png")}
-                className="img-fluid menu_logo mt-1"
-                alt="Query Overflow"
-              />
-              <div className="d-sm-flex pt-2 d-none">
-                <p className="ps-3 fs-5 mb-1">Query</p>
-                <p className="fs-5 ms-1 fw-bold mb-1">Overflow</p>
+              <div
+                className="d-flex qo"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <img
+                  src={require("../../assets/image/logo.png")}
+                  className="img-fluid menu_logo mt-1"
+                  alt="Query Overflow"
+                />
+                <div className="d-sm-flex pt-2 d-none mt-2">
+                  <p className="ps-3 fs-5 mb-1">Query</p>
+                  <p className="fs-5 ms-1 fw-bold mb-1">Overflow</p>
+                </div>
               </div>
               <div className="d-lg-block d-none">
                 <div className="menu_small_bar ms-4"></div>
@@ -82,12 +91,20 @@ const MenuBar = () => {
                 <i className="fa fa-search fs-5 pt-1 pe-4"></i>
               </div>
               <div>
-                <button className="menubar_btn1 me-2" onClick={()=>{
-                  navigate("/login")
-                }}>Login</button>
-                <button className="menubar_btn2 ms-2 me-lg-0 me-3" onClick={()=>{
-                  navigate("/signup")
-                }}>
+                <button
+                  className="menubar_btn1 me-2"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Login
+                </button>
+                <button
+                  className="menubar_btn2 ms-2 me-lg-0 me-3"
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                >
                   Sign Up
                 </button>
               </div>

@@ -1,0 +1,21 @@
+.userDetails{
+    flex: 100;
+}
+
+.border_user{
+    border-bottom: .75px solid #d7d4d4;
+}
+
+.number_votes{
+    border-radius: 5px;
+    border: 0.3px solid #000;
+    background: rgba(255, 224, 176, 0.15);
+}
+
+.para_user{
+    font-size: 13px;
+}
+
+.header_color{
+    color: #0074CC;
+}

@@ -6,6 +6,8 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Users from './components/Users'
 import Tags from './components/Tags'
+import SingleTagPage from './components/SingleTagPage'
+import SingleUserPage from './components/users/SingleUserPage'
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
       <Route path='/login' element={<Login/>}></Route>
       <Route path='/users' element={<Users/>}></Route>
       <Route path='/tags' element={<Tags/>}></Route>
+      <Route path="/tags/:tagname" element={<SingleTagPage/>}></Route>
+      <Route path='/users/:id' element={<SingleUserPage/>}></Route>
       <Route path='*' element={<PageNotFound/>}></Route>
     </Routes>
   )

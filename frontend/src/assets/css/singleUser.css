@@ -1,0 +1,22 @@
+.singleUser{
+    font-size: 10px;
+}
+
+.singleUser p b{
+    color: #0074CC;
+}
+
+.singleUser p b:hover{
+    cursor: pointer;
+}
+
+.Single{
+    flex: 25%;
+}
+
+@media (max-width:600px)
+{
+    .Single{
+        flex: 50%;
+    }
+}
