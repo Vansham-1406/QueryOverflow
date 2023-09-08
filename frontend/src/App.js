@@ -8,6 +8,8 @@ import Users from './components/Users'
 import Tags from './components/Tags'
 import SingleTagPage from './components/SingleTagPage'
 import SingleUserPage from './components/users/SingleUserPage'
+import AskQuery from './components/AskQuery'
+import SingleQuestionPage from './components/SingleQuestionPage'
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
       <Route path='/tags' element={<Tags/>}></Route>
       <Route path="/tags/:tagname" element={<SingleTagPage/>}></Route>
       <Route path='/users/:id' element={<SingleUserPage/>}></Route>
+      <Route path='/askquery' element={<AskQuery/>}></Route>
+      <Route path='/query/:questionID' element={<SingleQuestionPage/>}></Route>
       <Route path='*' element={<PageNotFound/>}></Route>
     </Routes>
   )
