@@ -8,6 +8,10 @@
     width: 21vw;
 }
 
+.hover_tag:hover{
+    cursor: pointer;
+}
+
 .boxSingleTag{
     border-radius: 5px;
     border: 0.3px solid #000;

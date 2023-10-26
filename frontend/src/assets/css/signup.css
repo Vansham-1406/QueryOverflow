@@ -162,6 +162,20 @@ input:focus{
     left: 0;
 }
 
+.password2 i:hover{
+    cursor: pointer;
+}
+
+.password2 i{
+    right: 20;
+    margin-left: -25px;
+    padding-top: 28px;
+}
+
+.circle_x:hover{
+    cursor: pointer;
+}
+
 @media (max-width:575px)
 {
     .mainSignUp{

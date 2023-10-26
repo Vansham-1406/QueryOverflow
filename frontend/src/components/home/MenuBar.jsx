@@ -1,13 +1,78 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import "../../assets/css/home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setMenu, setSearch } from "../../redux/features/basic/basicSlice";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+import { useSingleImageUser } from "../../redux/features/user/userActions";
+import { setEmptySingleUser } from "../../redux/features/user/userSlice";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCreateTag } from "../../redux/features/tags/tagsAction";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
 const MenuBar = () => {
+  const { singleImage } = useSingleImageUser();
+  const { createTag } = useCreateTag();
+  const user = useSelector((state) => state.user.SingleUser);
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [tagName, setTagName] = useState("")
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtDecode(localStorage.getItem("token")).exp * 1000 > Date.now()
+      ) {
+        const id = jwtDecode(localStorage.getItem("token")).id;
+        singleImage(id);
+      } else {
+        localStorage.removeItem("token");
+        dispatch(setEmptySingleUser());
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const basic = useSelector((state) => state.basic);
   const { menu, search } = basic;
+  const handleTopTag = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("You are not logged in", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    createTag(tagName).then(()=>closeModal());
+  };
   return (
     <div className="menu">
       <div className="menubar_top"></div>
@@ -90,28 +155,90 @@ const MenuBar = () => {
               >
                 <i className="fa fa-search fs-5 pt-1 pe-4"></i>
               </div>
-              <div>
-                <button
-                  className="menubar_btn1 me-2"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login
-                </button>
-                <button
-                  className="menubar_btn2 ms-2 me-lg-0 me-3"
-                  onClick={() => {
-                    navigate("/signup");
-                  }}
-                >
-                  Sign Up
-                </button>
-              </div>
+              {user?.name ? (
+                <div className="d-flex">
+                  <img
+                    src={user.avatarImage}
+                    height={"30"}
+                    alt={user.name}
+                    className="mt-1 img_hover"
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={user.name}
+                    onClick={() => {
+                      navigate(`/users/${user._id}`);
+                    }}
+                  />
+                  <Tooltip id="my-tooltip" />
+                  <button
+                    className="menubar_btn1 me-2 ms-3"
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      dispatch(setEmptySingleUser());
+                    }}
+                  >
+                    Logout
+                  </button>
+                  <button className="add_tag ms-2" onClick={openModal}>
+                    Add Tag
+                  </button>
+                  <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                  >
+                    <div className="d-flex justify-content-between">
+                      <h2
+                        ref={(_subtitle) => (subtitle = _subtitle)}
+                        className="h6 text-dark"
+                      >
+                        Add Tag
+                      </h2>
+                      <button onClick={closeModal} className="circle_x ms-5">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                      </button>
+                    </div>
+                    <div className="mt-4 mb-3">
+                      <input type="text" placeholder="Enter technology name" className="input_add_tag ps-2 pe-2" onChange={(e)=>{
+                        setTagName(e.target.value);
+                      }}/>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <button
+                        className="menubar_btn1 me-2"
+                        onClick={handleTopTag}
+                      >
+                        Add Tag
+                      </button>
+                    </div>
+                  </Modal>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    className="menubar_btn1 me-2"
+                    onClick={() => {
+                      navigate("/login");
+                    }}
+                  >
+                    Login
+                  </button>
+                  <button
+                    className="menubar_btn2 ms-2 me-lg-0 me-3"
+                    onClick={() => {
+                      navigate("/signup");
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+      <ToastContainer />
       <div className="menubar_bottom"></div>
     </div>
   );

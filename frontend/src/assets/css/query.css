@@ -1,0 +1,30 @@
+.queryTitle{
+    font-size: 11px;
+    color: #0995FF;
+    font-weight: 700;
+}
+
+.queryInput1{
+    height: 40px;
+    font-size: 12px;
+}
+
+.queryInput2{
+    height: 80px;
+    font-size: 12px;
+}
+
+.queryButton1{
+    background-color: #0995FF;
+    border: none;
+    color: white;
+    font-size: 13px;
+    border-radius: 7px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.radio_gpt{
+    font-size: 12px;
+    color: gray;
+}
