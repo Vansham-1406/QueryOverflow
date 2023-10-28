@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 const SingleQuestion = ({ singlequestion }) => {
   const navigate = useNavigate();
   function getTimeDiff(createdAt) {
@@ -83,26 +84,36 @@ const SingleQuestion = ({ singlequestion }) => {
               </p>
               <div className="d-flex mt-2">
                 {singlequestion?.tags?.map((tag) => (
-                  <div className="tagHeader ps-3 pe-3 me-2 ms-2" key={tag._id}>
-                    {tag.TagName}
+                  <div
+                    className="tagHeader ps-3 pe-3 me-2 ms-2 tag_hoverr"
+                    key={tag?._id}
+                    onClick={() => {
+                      navigate(`/tags/${tag?._id}`);
+                    }}
+                  >
+                    {tag?.TagName}
                   </div>
                 ))}
               </div>
               <div>
                 <div className="d-flex justify-content-sm-end justify-content-start mt-3 mt-sm-0">
-                  <div>
-                    <img
-                      src={singlequestion?.userId?.avatarImage}
-                      alt={singlequestion?.userId?.name}
-                      height={"40"}
-                      width="40"
-                    />
-                  </div>
-                  <div className="d-flex flex-column justify-content-center ms-2">
-                    <p className="mb-0 userTime">asked {timeDiff}</p>
-                    <p className="mb-0 userName">
-                      {singlequestion?.userId?.name}
-                    </p>
+                  <div className="tag_hoverr d-flex" onClick={()=>{
+                    navigate(`/users/${singlequestion?.userId?._id}`)
+                  }}>
+                    <div>
+                      <img
+                        src={singlequestion?.userId?.avatarImage}
+                        alt={singlequestion?.userId?.name}
+                        height={"40"}
+                        width="40"
+                      />
+                    </div>
+                    <div className="d-flex flex-column justify-content-center ms-2">
+                      <p className="mb-0 userTime">asked {timeDiff}</p>
+                      <p className="mb-0 userName">
+                        {singlequestion?.userId?.name}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

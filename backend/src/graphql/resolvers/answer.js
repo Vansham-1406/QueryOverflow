@@ -33,6 +33,7 @@ module.exports = {
       { AnswerContext, QuestionContext, UserContext },
       info
     ) => {
+      console.log('answerInput', body, code, image, userId, questionId)
       try {
         let storedImage = "";
 

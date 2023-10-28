@@ -2,7 +2,8 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     menu : false,
-    search : false
+    search : false,
+    questionSearch : []
 }
 
 const basicSlice = createSlice({
@@ -16,9 +17,13 @@ const basicSlice = createSlice({
         setSearch(state,action)
         {
             state.search = action.payload;
+        },
+        setQuestionSearch(state,action)
+        {
+            state.questionSearch = action.payload
         }
     }
 })
 
 export default basicSlice.reducer
-export const {setMenu,setSearch} = basicSlice.actions
+export const {setMenu,setSearch,setQuestionSearch} = basicSlice.actions

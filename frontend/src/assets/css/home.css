@@ -114,6 +114,13 @@
   height: 30px;
 }
 
+iframe#webpack-dev-server-client-overlay{display:none!important}
+
+.tag_hoverr:hover{
+  cursor: pointer;
+}
+
+
 @media (max-width: 419px) {
   .menubar_btn1 {
     width: 70px;

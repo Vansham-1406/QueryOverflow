@@ -3,12 +3,27 @@ import "../../assets/css/sidemenu.css";
 import SingleUser from "./SingleUser";
 import { useSelector } from "react-redux";
 import { useGetAllUser } from "../../redux/features/user/userActions";
+import jwtdecode from 'jwt-decode'
 
 const OtherUser = () => {
   const { getAllUser } = useGetAllUser();
   const user = useSelector((state) => state.user.users);
   const loading = useSelector((state) => state.user.loadingUser);
   const [userList, setUserList] = useState([])
+
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtdecode(localStorage.getItem("token")).exp * 1000 < Date.now()
+      ) {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+  }, []);
+
   useEffect(() => {
     getAllUser();
     setUserList(user);

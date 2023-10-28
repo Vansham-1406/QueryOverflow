@@ -3,6 +3,9 @@
   padding: 0;
 }
 
+iframe#webpack-dev-server-client-overlay {
+  display: none !important;
+}
 
 .sidemenu {
   width: 18vw;
@@ -14,7 +17,7 @@
   transition: all 0.3s ease-out;
 }
 
-.sidemenu1{
+.sidemenu1 {
   width: 23vw;
   height: 92vh;
   top: 10vh;
@@ -33,9 +36,9 @@
   cursor: pointer;
 }
 
-.box:hover{
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    transition: all .7s ease;
+.box:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.7s ease;
 }
 
 .box1 {
@@ -55,37 +58,31 @@
   scroll-behavior: smooth;
 }
 
-@media (max-width : 991px)
-{
-    .sidemenu{
-        width: 0vw;
-    }
-    .mainmenu{
-        width: 100vw;
-        left: 0;
-    }
+@media (max-width: 991px) {
+  .sidemenu {
+    width: 0vw;
+  }
+  .mainmenu {
+    width: 100vw;
+    left: 0;
+  }
 }
 
-
-
-@media (max-width : 794px) and (min-width : 576px)
-{
-    .sidemenu1{
-        width: 30vw;
-    }
+@media (max-width: 794px) and (min-width: 576px) {
+  .sidemenu1 {
+    width: 30vw;
+  }
 }
 
-@media (max-width:575px) and (min-width : 420px)
-{
-    .sidemenu1{
-        width: 40vw;
-    }
+@media (max-width: 575px) and (min-width: 420px) {
+  .sidemenu1 {
+    width: 40vw;
+  }
 }
 
-@media (max-width:419px)
-{
-    .sidemenu1{
-        width: 50vw;
-        top: 9.2%;
-    }
+@media (max-width: 419px) {
+  .sidemenu1 {
+    width: 50vw;
+    top: 9.2%;
+  }
 }

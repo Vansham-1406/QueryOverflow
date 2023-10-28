@@ -1,13 +1,14 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/sidemenu.css";
 import "../../assets/css/OtherTag.css";
 import SingleTag from "./SingleTag";
 import { useSelector } from "react-redux";
 import { useGetAllTag } from "../../redux/features/tags/tagsAction";
+import jwtdecode from 'jwt-decode'
 
 const OtherTag = () => {
   const tag = useSelector((state) => state.tags.tags);
-  const [tagList, setTagList] = useState([])
+  const [tagList, setTagList] = useState([]);
   const { getAllTag } = useGetAllTag();
   useEffect(() => {
     getAllTag();
@@ -15,23 +16,34 @@ const OtherTag = () => {
     // eslint-disable-next-line
   }, [tag]);
 
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtdecode(localStorage.getItem("token")).exp * 1000 < Date.now()
+      ) {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+  }, []);
+
   const handleTagSearch = (e) => {
-    if(e.target.value === "")
-    {
+    if (e.target.value === "") {
       setTagList(tag);
     }
-    if(e.target.value)
-    {
-      const save = tag.filter((item)=>item.TagName.toLowerCase().includes(e.target.value.toLowerCase()));
+    if (e.target.value) {
+      const save = tag.filter((item) =>
+        item.TagName.toLowerCase().includes(e.target.value.toLowerCase())
+      );
       setTagList(save);
-    }
-    else
-    {
+    } else {
       getAllTag();
     }
-  }
+  };
 
-console.log('tag', tag)
+  console.log("tag", tag);
   return (
     <div className="mainmenu d-flex pt-3 ps-3 flex-wrap flex-column">
       <div>
@@ -58,7 +70,7 @@ console.log('tag', tag)
       </div>
       <div className="d-flex flex-wrap mt-4">
         {tagList.map((singleTag) => (
-          <SingleTag singleTag={singleTag} key={singleTag?.TagName}/>
+          <SingleTag singleTag={singleTag} key={singleTag?.TagName} />
         ))}
       </div>
     </div>

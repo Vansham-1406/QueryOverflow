@@ -6,22 +6,46 @@ export const CREATE_QUESTION = gql`
       ... on QuestionSuccess {
         message
         question {
+          title
+          createdAt
+          _id
+          body
+          code
+          image
+          tags {
+            TagName
+          }
+          upvote {
+            _id
+          }
+          downvote {
+            _id
+          }
+          view {
+            _id
+          }
           userId {
             name
             avatarImage
-            question {
-              title
-              tags {
-                TagName
-              }
-            }
           }
+          chatGptOpt
           chatGptAnswer
           answers {
             _id
-          }
-          tags {
-            _id
+            createdAt
+            body
+            code
+            image
+            userId {
+              name
+              avatarImage
+            }
+            upvote {
+              _id
+            }
+            downvote {
+              _id
+            }
           }
         }
       }
@@ -43,6 +67,7 @@ export const GET_ALL_QUESTION = gql`
       userId {
         name
         avatarImage
+        _id
       }
       answers {
         _id

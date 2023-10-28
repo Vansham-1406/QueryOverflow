@@ -5,17 +5,34 @@ import SingleQuestion from "./SingleQuestion";
 import { useNavigate } from "react-router-dom";
 import { useGetAllQuestion } from "../../redux/features/question/questionAction";
 import { useSelector } from "react-redux";
+import jwtdecode from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AllQuestions = () => {
   const navigate = useNavigate();
   const { getAllFunction } = useGetAllQuestion();
-
-  const { AllQuestion, loading } = useSelector((state) => state.question);
+  const { loading } = useSelector((state) => state.question);
+  const questionSearch = useSelector((state) => state.basic.questionSearch);
 
   useEffect(() => {
     getAllFunction();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtdecode(localStorage.getItem("token")).exp * 1000 < Date.now()
+      ) {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+    // eslint-disable-next-line
+  }, [localStorage.getItem("token")]);
 
   return (
     <div className="allQuestions">
@@ -24,20 +41,30 @@ const AllQuestions = () => {
         <button
           className="query ps-3 pe-3"
           onClick={() => {
-            navigate("/askquery");
+            if (localStorage.getItem("token")) {
+              navigate("/askquery");
+            } else {
+              toast.warning("Please login or signup to ask queries", {
+                position: toast.POSITION.TOP_RIGHT,
+              });
+            }
           }}
         >
           Ask Query
         </button>
       </div>
-      <div className="ms-lg-4 ms-2 pt-4 total_question"> 
-        <p>{AllQuestion?.length} questions</p>
+      <div className="ms-lg-4 ms-2 pt-4 total_question">
+        <p>{questionSearch?.length} questions</p>
       </div>
-      <div className={loading? "d-flex align-items-center justify-content-center mb-2" : ""}>
-        {loading? (
-          <div class="loader"></div>
+      <div
+        className={
+          loading ? "d-flex align-items-center justify-content-center mb-2" : ""
+        }
+      >
+        {loading ? (
+          <div className="loader"></div>
         ) : (
-          AllQuestion.map((singlequestion) => (
+          questionSearch && questionSearch?.map((singlequestion) => (
             <SingleQuestion
               singlequestion={singlequestion}
               key={singlequestion._id}
@@ -46,6 +73,7 @@ const AllQuestions = () => {
         )}
       </div>
       <div className="bottom_line"></div>
+      <ToastContainer />
     </div>
   );
 };

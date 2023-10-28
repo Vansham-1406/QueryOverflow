@@ -56,6 +56,6 @@ module.exports = gql`
         isdownvote(questionId : ID!,userId : ID!) : Boolean! @auth
         getSingleQuestion(questionId : ID!) : QuestionResult!
         updateBookmarkedQuestion(questionId : ID!,userId : ID!) : Boolean! @auth
-        deleteQuestion(questionId : ID!) : Boolean! @auth
+        deleteQuestion(questionId : ID!) : Boolean!
     }
 `

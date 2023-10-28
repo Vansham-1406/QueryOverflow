@@ -6,6 +6,7 @@ import { useParams, useLocation } from "react-router-dom";
 import TagQuestions from "../tags/TagQuestions";
 import Query from "../query/Query";
 import SingleQuery from "../query/singleQuery";
+import jwtdecode from "jwt-decode";
 
 const MainMenu = () => {
   const [pathN, setPathN] = useState(false);
@@ -23,6 +24,20 @@ const MainMenu = () => {
     }
     // eslint-disable-next-line
   }, [q, pathN]);
+
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtdecode(localStorage.getItem("token")).exp * 1000 < Date.now()
+      ) {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+  }, []);
+
   return (
     <div className="mainmenu d-flex pt-4 flex-wrap flex-lg-row flex-column">
       {pathN && <TagQuestions />}

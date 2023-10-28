@@ -4,6 +4,8 @@ import "../../assets/css/userPage.css";
 import { useParams } from "react-router-dom";
 import { useSingleUserDetails } from "../../redux/features/user/userActions";
 import { useSelector } from "react-redux";
+import jwtdecode from 'jwt-decode'
+
 const UserPage = () => {
   const id = useParams().id;
   const { singleUserDetails } = useSingleUserDetails();
@@ -37,6 +39,18 @@ const UserPage = () => {
   }
 
   const timeDiff = getTimeDiff(user?.createdAt);
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("token") &&
+        jwtdecode(localStorage.getItem("token")).exp * 1000 < Date.now()
+      ) {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+    }
+  }, []);
 
   return (
     <div className="mainmenu d-flex pt-4 flex-wrap flex-lg-row flex-column">

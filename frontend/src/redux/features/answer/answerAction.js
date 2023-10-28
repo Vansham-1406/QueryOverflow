@@ -22,6 +22,9 @@ export function useCreateAnswer(){
             if(res)
             {
                 dispatch(setSingleAnswer(res));
+                toast.success("Answer Created Successfully!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                  });
             }
         } 
         catch (error) 

@@ -1,38 +1,41 @@
 import { useDispatch } from "react-redux";
 import { client } from "../../../../src/index";
-import { setAllQuestion, setLoading, setSingleQuestion } from "../question/questionSlice";
-import { GET_ALL_QUESTION, GET_SINGLE_QUESTION } from "../../../graphql/question";
+import {
+  setAllQuestion,
+  setLoading,
+  setSingleQuestion,
+} from "../question/questionSlice";
+import {
+  CREATE_QUESTION,
+  GET_ALL_QUESTION,
+  GET_SINGLE_QUESTION,
+} from "../../../graphql/question";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
-
-export function useGetSingleQuestion()
-{
+export function useGetSingleQuestion() {
   const dispatch = useDispatch();
   const getSingleQuestion = async (question) => {
-    try 
-    {
+    try {
       dispatch(setLoading(true));
       const res = await client.mutate({
-        mutation : GET_SINGLE_QUESTION,
-        variables : {question}
-      })
+        mutation: GET_SINGLE_QUESTION,
+        variables: { question },
+      });
 
       dispatch(setLoading(false));
-      if(res)
-      {
+      if (res) {
         dispatch(setSingleQuestion(res?.data?.getSingleQuestion?.question));
       }
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       dispatch(setLoading(false));
       toast.error(error.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-  }
-  return {getSingleQuestion};
+  };
+  return { getSingleQuestion };
 }
 
 export function useGetAllQuestion() {
@@ -56,4 +59,36 @@ export function useGetAllQuestion() {
     }
   };
   return { getAllFunction };
+}
+
+export function useCreateQuestion() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const createQuestion = async (inputQuestion) => {
+    console.log('data', inputQuestion)
+    try {
+      dispatch(setLoading(true));
+      const res = await client.mutate({
+        mutation: CREATE_QUESTION,
+        variables: { inputQuestion: inputQuestion },
+        context: {
+          headers: {
+            authorization: `${localStorage.getItem("token")}`,
+          },
+        },
+      });
+
+      if (res) {
+        dispatch(setLoading(false));
+        dispatch(setAllQuestion(res?.data?.createQuestion?.question));
+        navigate(`/query/${res?.data?.createQuestion?.question?._id}`);
+      }
+    } catch (error) {
+      dispatch(setLoading(false));
+      toast.error(error.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+  return { createQuestion };
 }

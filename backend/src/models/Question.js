@@ -5,12 +5,10 @@ const QuestionSchema = new Mongoose.Schema(
     title: {
       type: String,
       required: true,
-      maxLength: 100,
     },
     body: {
       type: String,
       required: true,
-      minLength: 10,
     },
     code: {
       type: String,

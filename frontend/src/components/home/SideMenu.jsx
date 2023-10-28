@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../assets/css/sidemenu.css";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+
 const SideMenu = () => {
   const basic = useSelector((state) => state.basic);
   const { menu } = basic;

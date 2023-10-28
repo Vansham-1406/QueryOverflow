@@ -11,14 +11,14 @@ import jwtDecode from "jwt-decode";
 
 const SingleQuery = () => {
   const { createAnswer } = useCreateAnswer();
-  const questionID = useParams().questionID;
+  const questionId = useParams().questionID;
   const navigate = useNavigate();
   const { getSingleQuestion } = useGetSingleQuestion();
   const question = useSelector((state) => state.question.singlequestion);
   useEffect(() => {
-    getSingleQuestion(questionID);
+    getSingleQuestion(questionId);
     // eslint-disable-next-line
-  }, [questionID]);
+  }, []);
 
   const [askQuery, setAskQuery] = useState({
     body: "",
@@ -45,15 +45,32 @@ const SingleQuery = () => {
   };
 
   const handlePostAnswer = () => {
-    if (!localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       toast.error("User is not logged in", {
         position: toast.POSITION.TOP_RIGHT,
       });
+      return;
     }
-    const id = jwtDecode(localStorage?.getItem("token")).id;
-    setAskQuery({ ...askQuery, questionId: questionID });
-    setAskQuery({ ...askQuery, userId: id });
-    createAnswer(askQuery);
+
+    const userId = jwtDecode(token).id;
+
+    if (askQuery.body === "") {
+      toast.warning("Enter text in body to submit answer", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+
+    setAskQuery({
+      ...askQuery,
+      questionId,
+      userId,
+    });
+
+    createAnswer(askQuery).then(()=>{
+      setAskQuery({...askQuery,body : ""})
+    })
   };
 
   function getTimeDiff(createdAt) {
@@ -94,7 +111,20 @@ const SingleQuery = () => {
           </div>
         </div>
         <div>
-          <button className="query ps-3 pe-3">Ask Query</button>
+          <button
+            className="query ps-3 pe-3"
+            onClick={() => {
+              if (localStorage.getItem("token")) {
+                navigate("/askquery");
+              } else {
+                toast.warning("Please login or signup to ask queries", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+              }
+            }}
+          >
+            Ask Query
+          </button>
         </div>
       </div>
       <div className="ps-lg-4 pe-ls-5 ps-2 pe-2 pt-4 d-flex">
@@ -187,7 +217,7 @@ const SingleQuery = () => {
             <div className="ps-lg-4 pe-ls-5 ps-2 pe-2 pt-4 d-flex">
               <div className="d-flex flex-column pe-sm-4 pe-3 align-items-center">
                 <div className="hover_arrow">
-                <i class="fa-solid fa-circle-arrow-up fs-4"></i>
+                  <i class="fa-solid fa-circle-arrow-up fs-4"></i>
                 </div>
                 <div className="mt-2 mb-2">
                   <p className="m-0 p-0 fs-5">
@@ -195,7 +225,7 @@ const SingleQuery = () => {
                   </p>
                 </div>
                 <div className="hover_arrow">
-                <i class="fa-solid fa-circle-arrow-down fs-4"></i>
+                  <i class="fa-solid fa-circle-arrow-down fs-4"></i>
                 </div>
                 <div className="mt-3 hover_arrow pb-4">
                   <i class="fa-regular fa-bookmark fs-5"></i>

@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setMenu, setSearch } from "../../redux/features/basic/basicSlice";
@@ -8,10 +8,12 @@ import { useSingleImageUser } from "../../redux/features/user/userActions";
 import { setEmptySingleUser } from "../../redux/features/user/userSlice";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCreateTag } from "../../redux/features/tags/tagsAction";
 import Modal from "react-modal";
+import { setQuestionSearch } from "../../redux/features/basic/basicSlice";
+import { useLocation } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -28,15 +30,15 @@ const MenuBar = () => {
   const { singleImage } = useSingleImageUser();
   const { createTag } = useCreateTag();
   const user = useSelector((state) => state.user.SingleUser);
+  const AllQuestion = useSelector((state) => state.question.AllQuestion);
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [tagName, setTagName] = useState("")
+  const [tagName, setTagName] = useState("");
   function openModal() {
     setIsOpen(true);
   }
 
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = "#f00";
   }
 
@@ -62,6 +64,13 @@ const MenuBar = () => {
   }, []);
 
   const dispatch = useDispatch();
+  const pathname = useLocation().pathname;
+  console.log('pathname', pathname)
+  useEffect(() => {
+    dispatch(setQuestionSearch(AllQuestion));
+    // eslint-disable-next-line
+  }, [AllQuestion]);
+
   const navigate = useNavigate();
   const basic = useSelector((state) => state.basic);
   const { menu, search } = basic;
@@ -71,8 +80,22 @@ const MenuBar = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-    createTag(tagName).then(()=>closeModal());
+    createTag(tagName).then(() => closeModal());
   };
+
+  const handleSearchInput = (e) => {
+    if (e.target.value === "") {
+      dispatch(setQuestionSearch(AllQuestion));
+    }
+    if (e.target.value) {
+      const searchQues = AllQuestion.filter((ques) =>
+        ques.title.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      dispatch(setQuestionSearch(searchQues));
+    }
+  };
+
+  console.log(useSelector((state) => state.basic.questionSearch));
   return (
     <div className="menu">
       <div className="menubar_top"></div>
@@ -87,6 +110,8 @@ const MenuBar = () => {
                   className="w-100 menu_input"
                   name="search"
                   placeholder="Search for Questions..."
+                  onChange={handleSearchInput}
+                  disabled={pathname === "/" ? false : true}
                 />
               </div>
             </div>
@@ -143,6 +168,8 @@ const MenuBar = () => {
                   className="w-100 menu_input"
                   name="search"
                   placeholder="Search for Questions..."
+                  onChange={handleSearchInput}
+                  disabled={pathname === "/" ? false : true}
                 />
               </div>
             </div>
@@ -196,13 +223,18 @@ const MenuBar = () => {
                         Add Tag
                       </h2>
                       <button onClick={closeModal} className="circle_x ms-5">
-                        <i class="fa-solid fa-circle-xmark"></i>
+                        <i className="fa-solid fa-circle-xmark"></i>
                       </button>
                     </div>
                     <div className="mt-4 mb-3">
-                      <input type="text" placeholder="Enter technology name" className="input_add_tag ps-2 pe-2" onChange={(e)=>{
-                        setTagName(e.target.value);
-                      }}/>
+                      <input
+                        type="text"
+                        placeholder="Enter technology name"
+                        className="input_add_tag ps-2 pe-2"
+                        onChange={(e) => {
+                          setTagName(e.target.value);
+                        }}
+                      />
                     </div>
                     <div className="d-flex justify-content-center align-items-center">
                       <button
@@ -238,7 +270,6 @@ const MenuBar = () => {
           </div>
         )}
       </div>
-      <ToastContainer />
       <div className="menubar_bottom"></div>
     </div>
   );
