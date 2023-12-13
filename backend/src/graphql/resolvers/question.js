@@ -69,7 +69,9 @@ module.exports = {
   Query: {
     getAllQuestion: async (parent, args, { QuestionContext }, info) => {
       try {
-        const questions = await QuestionContext.find({}).sort({ createdAt: -1 });
+        const questions = await QuestionContext.find({}).sort({
+          createdAt: -1,
+        });
         return questions;
       } catch (error) {
         throw new GraphQLError(error.message, {
@@ -83,7 +85,7 @@ module.exports = {
       }
     },
   },
-  
+
   Mutation: {
     createQuestion: async (
       parent,
@@ -259,6 +261,7 @@ module.exports = {
       }
       return false;
     },
+
     getSingleQuestion: async (
       parent,
       { questionId },
@@ -322,6 +325,37 @@ module.exports = {
         });
       }
     },
+    isBookmarkedQuestion: async (
+      parent,
+      { questionId, userId },
+      { QuestionContext, UserContext },
+      args
+    ) => {
+      try {
+        const question = await QuestionContext.findById({ _id: questionId });
+        if (question) {
+          const user = await UserContext.findById({ _id: userId });
+          if (user) {
+            const hasBookmarked = user.bookmarkedQuestions.includes(questionId);
+            if (hasBookmarked) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+        return false;
+      } catch (error) {
+        throw new GraphQLError(error.message, {
+          extensions: {
+            code: "UNAUTHORIZED",
+            http: {
+              status: 401,
+            },
+          },
+        });
+      }
+    },
     deleteQuestion: async (
       parent,
       { questionId },
@@ -358,6 +392,6 @@ module.exports = {
           },
         });
       }
-    }
+    },
   },
 };

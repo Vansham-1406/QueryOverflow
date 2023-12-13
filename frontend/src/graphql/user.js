@@ -73,6 +73,9 @@ export const GET_IMAGE_USER = gql`
           avatarImage
           _id
           name
+          bookmarkedAnswer {
+            _id
+          }
         }
       }
 

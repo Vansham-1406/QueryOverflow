@@ -63,13 +63,15 @@ const AllQuestions = () => {
       >
         {loading ? (
           <div className="loader"></div>
-        ) : (
-          questionSearch && questionSearch?.map((singlequestion) => (
+        ) : Array.isArray(questionSearch) ? (
+          questionSearch.map((singlequestion) => (
             <SingleQuestion
               singlequestion={singlequestion}
               key={singlequestion._id}
             />
           ))
+        ) : (
+          <p>No questions found</p>
         )}
       </div>
       <div className="bottom_line"></div>

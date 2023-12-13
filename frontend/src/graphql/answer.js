@@ -21,3 +21,31 @@ export const CREATE_ANSWER = gql`
     }
   }
 `;
+
+// export const isUpvote = gql``;
+
+// export const isDownvote = gql``;
+
+export const BookMarkAnswer = gql`
+  mutation UpdateBookmarkedAnswer(
+    $updateBookmarkedAnswerAnswerId2: ID!
+    $updateBookmarkedAnswerUserId2: ID!
+  ) {
+    updateBookmarkedAnswer(
+      answerId: $updateBookmarkedAnswerAnswerId2
+      userId: $updateBookmarkedAnswerUserId2
+    )
+  }
+`;
+
+export const isBookMarkAnswer = gql`
+  mutation IsBookmarkedAnswer(
+    $isBookmarkedAnswerAnswerId2: ID!
+    $isBookmarkedAnswerUserId2: ID!
+  ) {
+    isBookmarkedAnswer(
+      answerId: $isBookmarkedAnswerAnswerId2
+      userId: $isBookmarkedAnswerUserId2
+    )
+  }
+`;

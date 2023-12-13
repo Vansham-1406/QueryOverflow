@@ -33,8 +33,8 @@ module.exports = {
       { AnswerContext, QuestionContext, UserContext },
       info
     ) => {
-      console.log('answerInput', body, code, image, userId, questionId)
       try {
+        console.log('userId', userId)
         let storedImage = "";
 
         if (image) {
@@ -226,6 +226,37 @@ module.exports = {
                 { _id: user._id },
                 { $push: { bookmarkedAnswers: answerId } }
               );
+            }
+          }
+        }
+        return true;
+      } catch (error) {
+        throw new GraphQLError(error.message, {
+          extensions: {
+            code: "UNAUTHORIZED",
+            http: {
+              status: 401,
+            },
+          },
+        });
+      }
+    },
+    isBookmarkedAnswer: async (
+      parent,
+      { answerId, userId },
+      { AnswerContext, UserContext },
+      args
+    ) => {
+      try {
+        const answer = await AnswerContext.findById({ _id: answerId });
+        if (answer) {
+          const user = await UserContext.findById({ _id: userId });
+          if (user) {
+            const hasBookmarked = user.bookmarkedAnswers.includes(answerId);
+            if (hasBookmarked) {
+              return true;
+            } else {
+              return false;
             }
           }
         }

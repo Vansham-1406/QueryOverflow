@@ -102,6 +102,7 @@ export const GET_SINGLE_QUESTION = gql`
           image
           tags {
             TagName
+            _id
           }
           upvote {
             _id
@@ -113,6 +114,7 @@ export const GET_SINGLE_QUESTION = gql`
             _id
           }
           userId {
+            _id
             name
             avatarImage
           }
@@ -125,6 +127,7 @@ export const GET_SINGLE_QUESTION = gql`
             code
             image
             userId {
+              _id
               name
               avatarImage
             }
@@ -142,5 +145,59 @@ export const GET_SINGLE_QUESTION = gql`
         args
       }
     }
+  }
+`;
+
+export const UpvoteQuestion = gql`
+  mutation UpvoteQuestion(
+    $upvoteQuestionQuestionId2: ID!
+    $upvoteQuestionUserId2: ID!
+  ) {
+    upvoteQuestion(
+      questionId: $upvoteQuestionQuestionId2
+      userId: $upvoteQuestionUserId2
+    )
+  }
+`;
+
+export const DownvoteQuestion = gql`
+  mutation DownvoteQuestion($questionId: ID!, $userId: ID!) {
+    downvoteQuestion(questionId: $questionId, userId: $userId)
+  }
+`;
+
+export const isUpVote = gql`
+  mutation Isupvote($isupvoteQuestionId2: ID!, $isupvoteUserId2: ID!) {
+    isupvote(questionId: $isupvoteQuestionId2, userId: $isupvoteUserId2)
+  }
+`;
+
+export const isDownVote = gql`
+  mutation Isdownvote($isdownvoteQuestionId2: ID!, $isdownvoteUserId2: ID!) {
+    isdownvote(questionId: $isdownvoteQuestionId2, userId: $isdownvoteUserId2)
+  }
+`;
+
+export const bookmarkQuestion = gql`
+  mutation UpdateBookmarkedQuestion(
+    $updateBookmarkedQuestionQuestionId2: ID!
+    $updateBookmarkedQuestionUserId2: ID!
+  ) {
+    updateBookmarkedQuestion(
+      questionId: $updateBookmarkedQuestionQuestionId2
+      userId: $updateBookmarkedQuestionUserId2
+    )
+  }
+`;
+
+export const isbookmark = gql`
+  mutation IsBookmarkedQuestion(
+    $isBookmarkedQuestionQuestionId2: ID!
+    $isBookmarkedQuestionUserId2: ID!
+  ) {
+    isBookmarkedQuestion(
+      questionId: $isBookmarkedQuestionQuestionId2
+      userId: $isBookmarkedQuestionUserId2
+    )
   }
 `;

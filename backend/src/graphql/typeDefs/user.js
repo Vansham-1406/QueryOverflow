@@ -65,6 +65,6 @@ module.exports = gql`
         genOtp(mobilenumber : String!) : ResOtp!
         updateUser(mobilenumber : String!,password : String!) : SingleResult!
         getSingleUser(_id : ID!) : SingleResult!
-        deleteUser(_id : ID!) : SingleResult @auth
+        deleteUser(_id : ID!) : SingleResult
     }
 `

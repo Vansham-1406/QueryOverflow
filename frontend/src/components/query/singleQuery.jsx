@@ -1,20 +1,43 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/css/singleQuestion.css";
 import { useParams, useNavigate } from "react-router-dom";
-import { useGetSingleQuestion } from "../../redux/features/question/questionAction";
+import {
+  useBookMark,
+  useCreateDownVote,
+  useCreateUpVote,
+  useGetSingleQuestion,
+  useIfDownVote,
+  useIfUpVote,
+  useIsBookmark,
+} from "../../redux/features/question/questionAction";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useCreateAnswer } from "../../redux/features/answer/answerAction";
+import {
+  useBookMarkAnswer,
+  useCreateAnswer,
+} from "../../redux/features/answer/answerAction";
 import jwtDecode from "jwt-decode";
 
 const SingleQuery = () => {
   const { createAnswer } = useCreateAnswer();
+  const { createUpVote } = useCreateUpVote();
+  const { createdownVote } = useCreateDownVote();
+  const { ifDownVote } = useIfDownVote();
+  const { ifUpVote } = useIfUpVote();
   const questionId = useParams().questionID;
   const navigate = useNavigate();
   const { getSingleQuestion } = useGetSingleQuestion();
   const question = useSelector((state) => state.question.singlequestion);
+  const isUpvoted = useSelector((state) => state.question.isUpvoted);
+  const isDownvoted = useSelector((state) => state.question.isDownvoted);
+  const user = useSelector((state) => state.user.SingleUser);
+  const question1 = useSelector((state) => state.question);
+  const { isBookMark } = useIsBookmark();
+  const { bookmark } = useBookMark();
+  const { bookmark1 } = useBookMarkAnswer();
+
   useEffect(() => {
     getSingleQuestion(questionId);
     // eslint-disable-next-line
@@ -44,6 +67,19 @@ const SingleQuery = () => {
     };
   };
 
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const userId = jwtDecode(token).id;
+        ifDownVote(questionId, userId);
+        ifUpVote(questionId, userId);
+        isBookMark(questionId, userId);
+      }
+    } catch (error) {}
+    // eslint-disable-next-line
+  }, [questionId]);
+
   const handlePostAnswer = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -62,15 +98,26 @@ const SingleQuery = () => {
       return;
     }
 
-    setAskQuery({
-      ...askQuery,
-      questionId,
-      userId,
-    });
-
-    createAnswer(askQuery).then(()=>{
-      setAskQuery({...askQuery,body : ""})
-    })
+    console.log("questionId", questionId);
+    console.log("userId", userId);
+    if (userId && questionId) {
+      setAskQuery((prevAskQuery) => ({
+        ...prevAskQuery,
+        questionId,
+        userId,
+      }));
+    
+      if(askQuery?.questionId && askQuery?.userId)
+      {
+        createAnswer(askQuery).then(() => {
+          console.log('askQuery', askQuery); // This will log the updated state
+          setAskQuery({ ...askQuery, body: "" });
+        }).catch((err) => {
+          console.log('err', err);
+        });
+      }
+    }
+    
   };
 
   function getTimeDiff(createdAt) {
@@ -95,6 +142,42 @@ const SingleQuery = () => {
       return `${diffSeconds} seconds ago`;
     }
   }
+
+  const hanldeUpVote = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("User is not logged in", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    const userId = jwtDecode(token).id;
+    createUpVote(questionId, userId);
+  };
+
+  const handleDownVote = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("User is not logged in", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    const userId = jwtDecode(token).id;
+    createdownVote(questionId, userId);
+  };
+
+  const handleBookMark = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("User is not logged in", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    const userId = jwtDecode(token).id;
+    bookmark(questionId, userId);
+  };
 
   return (
     <div className="allQuestions">
@@ -129,19 +212,45 @@ const SingleQuery = () => {
       </div>
       <div className="ps-lg-4 pe-ls-5 ps-2 pe-2 pt-4 d-flex">
         <div className="d-flex flex-column pe-sm-4 pe-3 align-items-center">
-          <div className="hover_arrow">
-            <i class="fa-solid fa-circle-arrow-up fs-4"></i>
+          {/* upvote */}
+          <div className="hover_arrow" onClick={hanldeUpVote}>
+            {question1?.isupvote ? (
+              <i
+                class="fa-solid fa-circle-arrow-up fs-3"
+                style={{ color: "#ffd700" }}
+              ></i>
+            ) : (
+              <i class="fa-solid fa-circle-arrow-up fs-3"></i>
+            )}
           </div>
           <div className="mt-2 mb-2">
             <p className="m-0 p-0 fs-5">
-              {question?.upvote?.length - question?.downvote?.length}
+              {isUpvoted || isDownvoted
+                ? question?.upvote?.length - question?.downvote?.length
+                : question?.upvote?.length - question?.downvote?.length}
             </p>
           </div>
-          <div className="hover_arrow">
-            <i class="fa-solid fa-circle-arrow-down fs-4"></i>
+          {/* downvote */}
+          <div className="hover_arrow" onClick={handleDownVote}>
+            {question1?.isdownvote ? (
+              <i
+                class="fa-solid fa-circle-arrow-down fs-3"
+                style={{ color: "red" }}
+              ></i>
+            ) : (
+              <i class="fa-solid fa-circle-arrow-down fs-3"></i>
+            )}
           </div>
-          <div className="mt-3 hover_arrow pb-4">
-            <i className="fa-regular fa-bookmark fs-5"></i>
+          {/* bookmark question */}
+          <div className="mt-3 hover_arrow pb-4" onClick={handleBookMark}>
+            {question1?.isbookmark ? (
+              <i
+                className="fa-regular fa-bookmark fs-5"
+                style={{ color: "gold" }}
+              ></i>
+            ) : (
+              <i className="fa-regular fa-bookmark fs-5"></i>
+            )}
           </div>
         </div>
         <div className="d-flex flex-column justify-content-between">
@@ -163,7 +272,12 @@ const SingleQuery = () => {
           <div className="d-flex mt-4 justify-content-between">
             <div className="pb-4 d-flex">
               {question?.tags?.map((tag) => (
-                <div className="tagHeader ps-3 pe-3 me-2 ms-2 pt-1">
+                <div
+                  className="tagHeader ps-3 pe-3 me-2 ms-2 pt-1 hover_arrow"
+                  onClick={() => {
+                    navigate(`/tags/${tag?._id}`);
+                  }}
+                >
                   <p className="ps-2 pe-2 pt-1 mb-0 pb-1">{tag?.TagName}</p>
                 </div>
               ))}
@@ -176,7 +290,12 @@ const SingleQuery = () => {
                 )}
               </p>
 
-              <div className="d-flex pt-1 align-items-center">
+              <div
+                className="d-flex pt-1 align-items-center hover_arrow"
+                onClick={() => {
+                  navigate(`/users/${question?.userId?._id}`);
+                }}
+              >
                 <img
                   src={question?.userId?.avatarImage}
                   height={30}
@@ -213,64 +332,86 @@ const SingleQuery = () => {
       <div className="d-flex flex-column ms-4 mt-4">
         <p className="m-0 p-0 h5">{question?.answers?.length} Answer</p>
         {question?.answers?.length > 0 ? (
-          question?.answers?.map((answer) => (
-            <div className="ps-lg-4 pe-ls-5 ps-2 pe-2 pt-4 d-flex">
-              <div className="d-flex flex-column pe-sm-4 pe-3 align-items-center">
-                <div className="hover_arrow">
-                  <i class="fa-solid fa-circle-arrow-up fs-4"></i>
-                </div>
-                <div className="mt-2 mb-2">
-                  <p className="m-0 p-0 fs-5">
-                    {answer?.upvote?.length - answer?.downvote?.length}
-                  </p>
-                </div>
-                <div className="hover_arrow">
-                  <i class="fa-solid fa-circle-arrow-down fs-4"></i>
-                </div>
-                <div className="mt-3 hover_arrow pb-4">
-                  <i class="fa-regular fa-bookmark fs-5"></i>
-                </div>
-              </div>
-              <div className="d-flex flex-column justify-content-between w-100">
-                <p className="text-justify m-0 p-0">{answer?.body}</p>
-                {answer?.code && (
-                  <div className="code-bg mt-3 p-2">
-                    <pre>{answer?.code}</pre>
+          question?.answers?.map((answer) => {
+            const isAnswerBookmarked =
+              user.bookmarkedAnswer &&
+              user.bookmarkedAnswer.some(
+                (bookmark) => bookmark._id === answer._id
+              );
+            return (
+              <div className="ps-lg-4 pe-ls-5 ps-2 pe-2 pt-4 d-flex">
+                <div className="d-flex flex-column pe-sm-4 pe-3 align-items-center">
+                  {/* BookMark Answer */}
+                  <div
+                    className="mt-3 hover_arrow pb-4"
+                    onClick={() => {
+                      const token = localStorage.getItem("token");
+                      if (token) {
+                        const userId = jwtDecode(token).id;
+                        bookmark1(answer?._id, userId);
+                      } else {
+                        toast.error("User is not logged in", {
+                          position: toast.POSITION.TOP_RIGHT,
+                        });
+                      }
+                    }}
+                  >
+                    {isAnswerBookmarked ? (
+                      <i
+                        class="fa-regular fa-bookmark fs-5"
+                        style={{ color: "gold" }}
+                      ></i>
+                    ) : (
+                      <i class="fa-regular fa-bookmark fs-5"></i>
+                    )}
                   </div>
-                )}
-                {answer?.image && (
-                  <div className="mt-3">
-                    <img
-                      src={answer?.image}
-                      alt="CODE ERROR"
-                      className="img-fluid"
-                    />
-                  </div>
-                )}
-                <div className="d-flex mt-4">
-                  <div className="user_box d-flex flex-column p-2">
-                    <p className="m-0 p-0 asked_text1">
-                      answered on{" "}
-                      {moment(answer?.createdAt / 1).format(
-                        "MMMM Do YYYY, h:mm:ss a"
-                      )}
-                    </p>
-                    <div className="d-flex pt-1 align-items-center">
+                </div>
+                <div className="d-flex flex-column justify-content-between w-100">
+                  <p className="text-justify m-0 p-0">{answer?.body}</p>
+                  {answer?.code && (
+                    <div className="code-bg mt-3 p-2">
+                      <pre>{answer?.code}</pre>
+                    </div>
+                  )}
+                  {answer?.image && (
+                    <div className="mt-3">
                       <img
-                        src={answer?.userId?.avatarImage}
-                        height={30}
-                        alt="avatar"
+                        src={answer?.image}
+                        alt="CODE ERROR"
+                        className="img-fluid"
                       />
-                      <p className="m-0 p-0 user_name ps-2">
-                        {answer?.userId?.name}
+                    </div>
+                  )}
+                  <div className="d-flex mt-4">
+                    <div className="user_box d-flex flex-column p-2">
+                      <p className="m-0 p-0 asked_text1">
+                        answered on{" "}
+                        {moment(answer?.createdAt / 1).format(
+                          "MMMM Do YYYY, h:mm:ss a"
+                        )}
                       </p>
+                      <div
+                        className="d-flex pt-1 align-items-center hover_arrow"
+                        onClick={() => {
+                          navigate(`/users/${answer?.userId?._id}`);
+                        }}
+                      >
+                        <img
+                          src={answer?.userId?.avatarImage}
+                          height={30}
+                          alt="avatar"
+                        />
+                        <p className="m-0 p-0 user_name ps-2">
+                          {answer?.userId?.name}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="bottom_line mt-4 w-100"></div>
                 </div>
-                <div className="bottom_line mt-4 w-100"></div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <div></div>
         )}
@@ -355,7 +496,12 @@ const SingleQuery = () => {
           </p>
           <div className="d-flex pb-2">
             {question?.tags?.map((tag) => (
-              <div className="boxSingleTag1 d-flex align-items-center">
+              <div
+                className="boxSingleTag1 d-flex align-items-center hover_arrow"
+                onClick={() => {
+                  navigate(`/tags/${tag?._id}`);
+                }}
+              >
                 <p className="ps-2 pe-2 pt-1 mb-0 pb-1">{tag?.TagName}</p>
               </div>
             ))}

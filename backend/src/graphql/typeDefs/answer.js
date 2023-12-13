@@ -43,5 +43,6 @@ module.exports = gql`
         isupvoteAnswer(answerId : ID!,userId : ID!) : Boolean! @auth
         isdownvoteAnswer(answerId : ID!,userId : ID!) : Boolean! @auth
         updateBookmarkedAnswer(answerId : ID!,userId : ID!) : Boolean! @auth
+        isBookmarkedAnswer(answerId : ID!,userId : ID!) : Boolean! @auth
     }
 `
