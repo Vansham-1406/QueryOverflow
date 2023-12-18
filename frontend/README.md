@@ -31,7 +31,7 @@ Query Overflow is a platform for users to ask questions, provide answers, and en
 ### Installation
 
 1. Clone the repository:
-git clone https://github.com/your-username/query-overflow.git
+git clone https://github.com/Vansham-1406/QueryOverflow.git
 
 
 3. Navigate to the project directory:
