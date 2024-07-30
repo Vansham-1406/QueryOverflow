@@ -66,9 +66,10 @@ module.exports = {
           const tagInfo = `This is the ${TagName} of the tag, I am creating it for my website. I just need a description of this of 50 words. Only description. No words should be from your side like sure, or anything like that`;
           const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: tagInfo }],
+            messages: [{ role: "system", content: tagInfo }],
           });
 
+          console.log('response', response)
           body = response.choices[0].message.content;
           if (body) {
             const tag = await TagContext.create({ TagName : Tn, body });

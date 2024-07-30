@@ -31,8 +31,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const GEN_OTP = gql`
-  mutation GETOTP($mobilenumber: String!) {
-    genOtp(mobilenumber: $mobilenumber) {
+  mutation GETOTP($email: String!) {
+    genOtp(email: $email) {
       ... on ResFailure {
         message
         args
@@ -47,8 +47,8 @@ export const GEN_OTP = gql`
 `;
 
 export const UPDATE_PASSWORD = gql`
-  mutation UpdatedUser($mobilenumber: String!, $password: String!) {
-    updateUser(mobilenumber: $mobilenumber, password: $password) {
+  mutation UpdatedUser($email: String!, $password: String!) {
+    updateUser(email: $email, password: $password) {
       ... on SingleSuccess {
         message
         user {

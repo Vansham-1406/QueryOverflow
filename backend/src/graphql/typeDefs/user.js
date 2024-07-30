@@ -6,7 +6,7 @@ module.exports = gql`
         createdAt : String,
         updatedAt : String,
         name : String!,
-        mobilenumber : String!,
+        email : String!,
         password : String!,
         question : [Question!]!,
         answer : [Answer!]!,
@@ -41,12 +41,12 @@ module.exports = gql`
     }
     input CreateInput {
         name : String!,
-        mobilenumber : String,
+        email : String,
         password : String!
     }
 
     input LoginInput{
-        mobilenumber : String!,
+        email : String!,
         password : String!
     }
 
@@ -62,8 +62,8 @@ module.exports = gql`
     extend type Mutation{
         createUser(createInput : CreateInput!) : Result!
         loginUser(loginInput : LoginInput!) : Result!
-        genOtp(mobilenumber : String!) : ResOtp!
-        updateUser(mobilenumber : String!,password : String!) : SingleResult!
+        genOtp(email : String!) : ResOtp!
+        updateUser(email : String!,password : String!) : SingleResult!
         getSingleUser(_id : ID!) : SingleResult!
         deleteUser(_id : ID!) : SingleResult
     }

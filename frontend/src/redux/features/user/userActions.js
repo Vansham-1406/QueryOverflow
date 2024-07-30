@@ -91,13 +91,14 @@ export function useCreateUser() {
 
 export function useSendOtp() {
   const dispatch = useDispatch();
-  const sendOtp = async (number) => {
+  const sendOtp = async (email) => {
     try {
       dispatch(setLoading(true));
+    
       const res = await client.mutate({
         mutation: GEN_OTP,
         variables: {
-          mobilenumber: number,
+          email:email,
         },
       });
 
@@ -137,7 +138,7 @@ export function useLoginUser() {
       });
       dispatch(setLoading(false));
 
-      if (res.data.loginUser.args === "mobile number") {
+      if (res.data.loginUser.args === "email") {
         toast.error("User does not exist", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -174,7 +175,7 @@ export function useUpdatePassword() {
       const res = await client.mutate({
         mutation: UPDATE_PASSWORD,
         variables: {
-          mobilenumber: data.mobilenumber,
+          email: data.email,
           password: data.password,
         },
       });

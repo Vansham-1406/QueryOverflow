@@ -1,15 +1,13 @@
 const { GraphQLError } = require("graphql");
-const { FAST2SMS } = require("../../config/index");
-const fast2sms = require("fast-two-sms");
+const nodemailer = require("nodemailer");
+const { pass } = require("../../config/index");
 const bcrypt = require("bcryptjs");
 
 module.exports = {
   User: {
     question: async (parent, args, { QuestionContext }, info) => {
       const allQuestion = parent.questions.map(async (singleQuestion) => {
-        const singlequestion = await QuestionContext.findById(
-          singleQuestion
-        );
+        const singlequestion = await QuestionContext.findById(singleQuestion);
         if (singlequestion) {
           return singlequestion;
         }
@@ -98,7 +96,7 @@ module.exports = {
   Query: {
     getAllUser: async (parent, args, { UserContext }, info) => {
       try {
-        const user = await UserContext.find({})
+        const user = await UserContext.find({});
         return user;
       } catch (error) {
         throw new GraphQLError(error.message, {
@@ -110,7 +108,7 @@ module.exports = {
           },
         });
       }
-    }
+    },
   },
   Mutation: {
     getSingleUser: async (parent, { _id }, { UserContext }, info) => {
@@ -141,23 +139,23 @@ module.exports = {
     },
     createUser: async (
       parent,
-      { createInput: { name, mobilenumber, password } },
+      { createInput: { name, email, password } },
       { UserContext },
       info
     ) => {
       try {
-        const user = await UserContext.findOne({ mobilenumber });
+        const user = await UserContext.findOne({ email });
 
         if (user) {
           return {
             message: "User already exist",
-            args: "mobile number",
+            args: "email",
           };
         }
 
         const newUser = await UserContext.create({
           name,
-          mobilenumber,
+          email,
           password,
         });
 
@@ -185,17 +183,17 @@ module.exports = {
 
     loginUser: async (
       parent,
-      { loginInput: { mobilenumber, password } },
+      { loginInput: { email, password } },
       { UserContext },
       info
     ) => {
       try {
-        const user = await UserContext.findOne({ mobilenumber });
+        const user = await UserContext.findOne({ email });
 
         if (!user) {
           return {
             message: "User not found",
-            args: "mobile number",
+            args: "email"
           };
         }
 
@@ -230,17 +228,28 @@ module.exports = {
       }
     },
 
-    genOtp: async (parent, { mobilenumber }, context, info) => {
+    genOtp: async (parent, { email }, context, info) => {
       const otp = Math.floor(Math.random() * (9999 - 1000) + 1000);
-      var options = {
-        authorization: FAST2SMS,
-        numbers: [mobilenumber],
-        message: `Your otp is ${otp}`,
-        flash: 1,
-      };
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "vanshamaggarwal697@gmail.com",
+          pass: process.env.pass,
+        },
+      });
       try {
-        const response = await fast2sms.sendMessage(options);
-        if (response.return === true) {
+        var mailOptions = {
+          from: "vanshamaggarwal697@gmail.com",
+          to: email,
+          subject: "Verification from Query Overflow",
+          text: `Your OTP is: ${otp}
+  Regards,
+  Query Overflow
+                  `,
+        };
+
+        const response = transporter.sendMail(mailOptions);
+        if (response) {
           return {
             message: "OTP SENT SUCCESSFULLY",
             otp: otp,
@@ -248,7 +257,7 @@ module.exports = {
         } else {
           return {
             message: "Message not sent",
-            args: mobilenumber,
+            args: `${email}`,
           };
         }
       } catch (error) {
@@ -263,20 +272,25 @@ module.exports = {
       }
     },
 
-    updateUser: async (parent, { mobilenumber, password }, { UserContext }, info) => {
-      const user = await UserContext.findOne({ mobilenumber});
+    updateUser: async (
+      parent,
+      { email, password },
+      { UserContext },
+      info
+    ) => {
+      const user = await UserContext.findOne({ email });
       try {
         if (!user) {
           return {
             message: "User not found",
-            args: mobilenumber,
+            args: email,
           };
         }
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         const updatedUser = await UserContext.findByIdAndUpdate(
-          { _id : user._id },
+          { _id: user._id },
           { password: hash },
           { new: true }
         );

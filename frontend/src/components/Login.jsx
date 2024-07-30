@@ -25,13 +25,13 @@ const Login = () => {
   const { login } = useLoginUser();
   const user = useSelector((state)=>state.user);
   const [loginDetails, setLoginDetails] = useState({
-    mobilenumber: "",
+    email: "",
     password: "",
   });
   const {updatePassword} = useUpdatePassword();
 
   const [modalInput, setModalInput] = useState({
-    mobilenumber : "",
+    email : "",
     otp : "",
     password : ""
   })
@@ -67,8 +67,8 @@ const Login = () => {
   }, [user])
 
   const handleSubmit = () => {
-    if (loginDetails.mobilenumber === "") {
-      toast.warning("Enter mobile number", {
+    if (loginDetails.email === "") {
+      toast.warning("Enter email", {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (loginDetails.password === "") {
@@ -97,13 +97,13 @@ const Login = () => {
   }
 
   const sendOtpHandle = async () => {
-    await sendOtp(modalInput.mobilenumber)
+    await sendOtp(modalInput.email)
   };
 
   const verifySentOtpHandle = () => {
     // eslint-disable-next-line
     if (modalInput.otp == user.otp) {
-      toast.success("Mobile Number Verified !", {
+      toast.success("Email Verified !", {
         position: toast.POSITION.TOP_RIGHT,
       });
       setVerifyOtp(true);
@@ -113,7 +113,7 @@ const Login = () => {
   const hanldeUpdatePassword = () => {
     if(!verifyOtp)
     {
-      toast.warning("Verify the mobile number !", {
+      toast.warning("Verify the email !", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
@@ -162,11 +162,11 @@ const Login = () => {
               type={"text"}
               name="name"
               className="mt-4 ms-sm-4 ms-4 signupInp3 ps-2"
-              placeholder="Enter mobile number*"
+              placeholder="Enter email*"
               onChange={(e) => {
                 setLoginDetails({
                   ...loginDetails,
-                  mobilenumber: e.target.value,
+                  email: e.target.value,
                 });
               }}
             />
@@ -247,9 +247,9 @@ const Login = () => {
               type={"text"}
               name="name"
               className="signupInp2 ps-2"
-              placeholder="Number without country code*"
+              placeholder="Email id*"
               onChange={(e)=>{
-                setModalInput({...modalInput,mobilenumber : e.target.value})
+                setModalInput({...modalInput,email : e.target.value})
               }}
               disabled={verifyOtp || sentOtp ? true : false}
             />

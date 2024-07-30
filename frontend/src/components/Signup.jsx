@@ -20,7 +20,7 @@ const Signup = () => {
 
   const [createInput, setcreateInput] = useState({
     name: "",
-    mobilenumber: "",
+    email: "",
     password: "",
   });
 
@@ -34,7 +34,7 @@ const Signup = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (!verifyOtp) {
-      toast.error("Verify the mobile number !", {
+      toast.error("Verify the email !", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
@@ -72,13 +72,13 @@ const Signup = () => {
   
 
   const sendOtpHandle = async () => {
-    await sendOtp(createInput.mobilenumber)
+    await sendOtp(createInput.email)
   };
 
   const verifySentOtpHandle = () => {
     // eslint-disable-next-line
     if (userOtp == user.otp) {
-      toast.success("Mobile Number Verified !", {
+      toast.success("Email Verified !", {
         position: toast.POSITION.TOP_RIGHT,
       });
       setVerifyOtp(true);
@@ -128,11 +128,11 @@ const Signup = () => {
               type={"text"}
               name="name"
               className="ms-sm-4 ms-4 signupInp2 ps-2"
-              placeholder="Number without country code*"
+              placeholder="Enter email id*"
               onChange={(e) => {
                 setcreateInput({
                   ...createInput,
-                  mobilenumber: e.target.value,
+                  email: e.target.value,
                 });
               }}
               disabled={verifyOtp || sentOtp ? true : false}
